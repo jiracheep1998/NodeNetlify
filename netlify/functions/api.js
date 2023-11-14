@@ -7,13 +7,33 @@ exports.handler = async (event, context) => {
 
 
     try {
-        const response = await axios.get('http://ifconfig.me/ip');
-        const ip = response.data;
-
-        return {
-            statusCode: 200,
-            body: JSON.stringify({ ip }),
+        const jsonData = {
+            height: 512,
+            prompt: 'cat',
+            quantity: 3,
+            style: 'Oil Painting',
+            width: 512
         };
+
+        axios.post('https://restapi.cutout.pro/web/ai/generateImage/generateAsync', JSON.stringify(jsonData), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => {
+                return {
+                    statusCode: 200,
+                    body: JSON.stringify({ response }),
+                };
+            })
+            .catch(error => {
+                return {
+                    statusCode: 500,
+                    body: JSON.stringify({ error }),
+                };
+            });
+
+
     } catch (error) {
         return {
             statusCode: 500,
