@@ -6,12 +6,18 @@ const os = require('os');
 exports.handler = async (event, context) => {
 
     
-    const networkInterfaces = os.networkInterfaces();
+    axios.get('http://ifconfig.me/ip')
+    .then(response => {
+        return {
+            statusCode: 500,
+            body: response.data,
+        };
+    })
+    .catch(error => {
+        console.error('Error fetching IP:', error);
+    });
 
-    return {
-        statusCode: 500,
-        body: JSON.stringify(networkInterfaces),
-      };
+    
 };
 
 // module.exports.handler();
