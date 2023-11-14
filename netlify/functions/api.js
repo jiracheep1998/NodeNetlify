@@ -5,19 +5,23 @@ const os = require('os');
 
 exports.handler = async (event, context) => {
 
-    
-    axios.get('http://ifconfig.me/ip')
-    .then(response => {
+
+    try {
+        const response = await axios.get('http://ifconfig.me/ip');
+        const ip = response.data;
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ ip }),
+        };
+    } catch (error) {
         return {
             statusCode: 500,
-            body: response.data,
+            body: JSON.stringify({ error: 'Internal Server Error' }),
         };
-    })
-    .catch(error => {
-        console.error('Error fetching IP:', error);
-    });
+    }
 
-    
+
 };
 
 // module.exports.handler();
